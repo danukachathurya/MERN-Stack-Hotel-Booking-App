@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Modal, Button, Carousel} from 'react-bootstrap';
+import {Link} from 'react-router-dom'
 
 function Room({room}) {
 
@@ -22,6 +23,11 @@ function Room({room}) {
         </b>
 
         <div style={{float: 'right'}}>
+
+          <Link to={`/book/${room._id}`}>
+            <Button className='btn btn-primary m-2'>Book Now</Button>
+          </Link>
+
           <button className='btn btn-primary' onClick={handleShow}>View Details</button>
         </div>
       </div>
@@ -36,10 +42,7 @@ function Room({room}) {
                      
             {room.imageurls.map(url=>{
               return <Carousel.Item>
-              <img 
-                className="d-block w-100 bigimg"
-                src={url}
-              />
+              <img className="d-block w-100 bigimg" src={url}/>
             </Carousel.Item>
             })}
            
