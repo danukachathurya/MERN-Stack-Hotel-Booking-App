@@ -58,3 +58,16 @@ h1{
   height: 400px;
   border-radius: 5px !important;
 }
+
+input {
+  box-shadow: none !important;
+  margin-top: 10px;
+  border: 1px solid black !important;
+}
+
+h2 {
+  font-size: 30px !important;
+  padding: 10px;
+  font-weight: bolld !important;
+  text-align: center;
+}
