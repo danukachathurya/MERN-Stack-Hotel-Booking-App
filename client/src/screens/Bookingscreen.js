@@ -17,7 +17,7 @@ function Bookingscreen() {
   const toDate = moment(todate, 'DD-MM-YYYY');
 
   const totaldays = moment.duration(toDate.diff(fromDate)).asDays()+1;
-  const totalamount = room ? totaldays * room.rentperday : 0;
+  const [totalamount, settotalamount] = useState();
 
   
 
@@ -27,6 +27,7 @@ function Bookingscreen() {
       try {
         setloading(true);
         const data = (await axios.post("/api/rooms/getroombyid", {roomid : roomid})).data;
+        settotalamount(data.rentperday * totaldays);
         setroom(data);
         setloading(false);
       } catch (error) {
@@ -36,6 +37,26 @@ function Bookingscreen() {
     };
     fetchData();
   }, [])
+
+  async function bookRoom() {
+
+    const bookingDetails = {
+
+      room,
+      userid:JSON.parse(localStorage.getItem('currentUser'))._id,
+      fromdate,
+      todate,
+      totalamount,
+      totaldays
+    }
+    
+    try {
+      const result = await axios.post('/api/booking/bookroom',bookingDetails)
+    } catch (error) {
+      
+    }
+
+  }
 
   return (
     <div className="m-5">
@@ -55,7 +76,7 @@ function Bookingscreen() {
               <hr/>
 
               <b>
-                <p>Name : </p>
+                <p>Name : {JSON.parse(localStorage.getItem('currentUser')).name}</p>
                 <p>From Date : {fromdate}</p>
                 <p>To Date : {todate}</p>
                 <p>Max Count : {room.maxcount}</p>
@@ -74,7 +95,7 @@ function Bookingscreen() {
             </div>
 
             <div style={{float:'right'}}>
-              <button className='btn btn-primary'>Pay Now</button>
+              <button className='btn btn-primary' onClick={bookRoom}>Pay Now</button>
             </div>
 
           </div>
