@@ -24,9 +24,13 @@ function Room({room, fromdate, todate}) {
 
         <div style={{float: 'right'}}>
 
-          <Link to={`/book/${room._id}/${fromdate}/${todate}`}>
-            <Button className='btn btn-primary m-2'>Book Now</Button>
-          </Link>
+          {(fromdate && todate) && (
+              <Link to={`/book/${room._id}/${fromdate}/${todate}`}>
+              <Button className='btn btn-primary m-2'>Book Now</Button>
+            </Link>
+          )}
+
+          
 
           <button className='btn btn-primary' onClick={handleShow}>View Details</button>
         </div>
