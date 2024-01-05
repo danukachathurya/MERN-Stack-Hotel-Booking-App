@@ -42,7 +42,7 @@ function Navbar() {
                     aria-labelledby="dropdownMenuButton1"
                   >
                     <li>
-                      <a class="dropdown-item" href="#">
+                      <a class="dropdown-item" href="/booking">
                         Bookings
                       </a>
                     </li>
