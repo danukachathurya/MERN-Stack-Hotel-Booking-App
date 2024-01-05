@@ -1,50 +1,66 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const Bookings = require('../models/booking');
-const moment = require('moment');
-const Room = require('../models/room');
+const Bookings = require("../models/booking");
+const moment = require("moment");
+const Room = require("../models/room");
+const { v4: uuidv4 } = require("uuid");
+const stripe = require("stripe")(
+  "sk_test_51OUxf7BkRKQHJh5bdwoNAORJrSGlV1Ra3vGaeAMJW8gdRyoejubOULXxElGk3sZ0kZ4X0l92n05DZunnj97cINsX00007y395c"
+);
 
-router.post("/bookroom", async(req,res) => {
+router.post("/bookroom", async (req, res) => {
+  const { room, userid, fromdate, todate, totalamount, totaldays, token } =
+    req.body;
 
-  const {room,
-    userid,
-    fromdate,
-    todate,
-    totalamount,
-    totaldays} = req.body;
+  try {
+    const customer = await stripe.customers.create({
+      email: token.email,
+      source: token.id,
+    });
 
-    try {
+    const payment = await stripe.charges.create(
+      {
+        amount: totalamount * 100,
+        customer: customer.id,
+        currency: "usd",
+        receipt_email: token.email,
+      },
+      {
+        idempotencyKey: uuidv4(), //customer can not charges twice
+      }
+    );
+
+    if (payment) {
       const newbooking = new Bookings({
-        room : room.name,
-        roomid : room._id,
+        room: room.name,
+        roomid: room._id,
         userid,
-        fromdate : moment(fromdate).format('DD-MM-YYYY'),
-        todate : moment(todate).format('DD-MM-YYYY'),
+        fromdate: moment(fromdate, "DD-MM-YYYY").format("DD-MM-YYYY"),
+        todate: moment(todate, "DD-MM-YYYY").format("DD-MM-YYYY"),
         totalamount,
         totaldays,
-        transactionid : '1234'
-      })
+        transactionid: "1234",
+      });
 
       const booking = await newbooking.save();
 
-      const roomtemp = await Room.findOne({_id : room._id});
+      const roomtemp = await Room.findOne({ _id: room._id });
 
       roomtemp.currentbookings.push({
         bookingid: booking._id,
-        fromdate: moment(fromdate).format('DD-MM-YYYY'),
-        todate: moment(todate).format('DD-MM-YYYY'),
-        userid : userid,
-        status : booking.status
+        fromdate: moment(fromdate, "DD-MM-YYYY").format("DD-MM-YYYY"),
+        todate: moment(todate, "DD-MM-YYYY").format("DD-MM-YYYY"),
+        userid: userid,
+        status: booking.status,
       });
 
-      await roomtemp.save()
-
-      res.send('Room Booked Successfully')
-
-    } catch (error) {
-      return res.status(400).json({error})
+      await roomtemp.save();
     }
 
+    res.send("Payment Successfull, Your Room is Booked");
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
 });
 
 module.exports = router;
