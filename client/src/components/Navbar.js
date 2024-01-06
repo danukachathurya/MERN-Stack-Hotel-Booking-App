@@ -8,12 +8,12 @@ function Navbar() {
   }
   return (
     <div>
-      <nav class="navbar navbar-expand-lg">
-        <a class="navbar-brand" href="#">
+      <nav className="navbar navbar-expand-lg">
+        <a className="navbar-brand" href="#">
           Shey Rooms
         </a>
         <button
-          class="navbar-toggler"
+          className="navbar-toggler"
           type="button"
           data-toggle="collapse"
           data-target="#navbarNav"
@@ -21,33 +21,33 @@ function Navbar() {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"><i class="fa-solid fa-bars" style={{color: 'white'}}></i></span>
+          <span className="navbar-toggler-icon"><i className="fa-solid fa-bars" style={{color: 'white'}}></i></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav" style={{marginRight:'80px'}}>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav" style={{marginRight:'80px'}}>
             {user ? (
               <>
-                <div class="dropdown">
+                <div className="dropdown">
                   <button
-                    class="btn btn-secondary dropdown-toggle"
+                    className="btn btn-secondary dropdown-toggle"
                     type="button"
                     id="dropdownMenuButton1"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    <i class="fa-solid fa-user"></i> {user.name}
+                    <i className="fa-solid fa-user"></i> {user.name}
                   </button>
                   <ul
-                    class="dropdown-menu"
+                    className="dropdown-menu"
                     aria-labelledby="dropdownMenuButton1"
                   >
                     <li>
-                      <a class="dropdown-item" href="/booking">
-                        Bookings
+                      <a className="dropdown-item" href="/profile">
+                        Profile
                       </a>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="#" onClick={logout}>
+                      <a className="dropdown-item" href="#" onClick={logout}>
                         Logout
                       </a>
                     </li>
@@ -57,13 +57,13 @@ function Navbar() {
               </>
             ) : (
               <>
-                <li class="nav-item active">
-                  <a class="nav-link" href="/register">
+                <li className="nav-item active">
+                  <a className="nav-link" href="/register">
                     Register
                   </a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/login">
+                <li className="nav-item">
+                  <a className="nav-link" href="/login">
                     Login
                   </a>
                 </li>
