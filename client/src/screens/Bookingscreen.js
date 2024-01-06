@@ -22,6 +22,11 @@ function Bookingscreen() {
   const [totalamount, settotalamount] = useState();
 
   useEffect(() => {
+
+    if(localStorage.getItem('currentUser')){
+      window.localStorage.reload='/login'
+    }
+
     const fetchData = async () => {
       try {
         setloading(true);

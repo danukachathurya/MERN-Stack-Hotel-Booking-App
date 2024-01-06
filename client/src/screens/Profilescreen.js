@@ -3,6 +3,8 @@ import axios from "axios";
 import { Tabs } from "antd";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
+import Swal from "sweetalert2";
+import { Divider, Tag } from 'antd';
 
 const { TabPane } = Tabs;
 
@@ -62,10 +64,31 @@ export function MyBookings() {
     fetchData();
   }, []);
 
+  async function cancelBooking(bookingid, roomid) {
+    try {
+      setloading(true);
+      const result = await axios.post("/api/booking/cancelbooking", {
+        bookingid,
+        roomid,
+      });
+      console.log(result);
+      setloading(false);
+      Swal.fire("Congrats", "Your booking has been cancelled", "success").then(
+        (result) => {
+          window.location.reload();
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      setloading(false);
+      Swal.fire("OOps", "Something went wrong", "error");
+    }
+  }
+
   return (
     <div className="row">
       <div className="col-md-6">
-        {loading && <loader />}
+        {loading && <Loader />}
         {bookings &&
           bookings.map((booking) => {
             return (
@@ -84,12 +107,22 @@ export function MyBookings() {
                   <b>Amount</b> : {booking.totalamount}
                 </p>
                 <p>
-                  <b>Status</b> : {booking.status == "booked" ? "CONFIRMED" : "CANCELLED"}
+                  <b>Status</b> :{" "}
+                  {booking.status=='cancelled' ? (<Tag color="red">CANCELLED</Tag>) : (<Tag color="green">CONFIRM</Tag>)}
                 </p>
 
-                <div style={{ textAlign: 'right' }}>
-                  <button className="btn btn-primary">CANCEL BOOKING</button>
-                </div>
+                {booking.status !== "cancelled" && (
+                  <div style={{ textAlign: "right" }}>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => {
+                        cancelBooking(booking._id, booking.roomid);
+                      }}
+                    >
+                      CANCEL BOOKING
+                    </button>
+                  </div>
+                )}
               </div>
             );
           })}
