@@ -7,6 +7,15 @@ import Error from "../components/Error";
 const { TabPane } = Tabs;
 
 function Adminscreen() {
+
+  useEffect(() => {
+
+    if(!JSON.parse(localStorage.getItem("currentUser")).isAdmin) {
+      window.location.href = "/home"
+    }
+
+  }, [])
+
   return (
     <div
       className="mt-3 bs"
@@ -26,7 +35,7 @@ function Adminscreen() {
           <h1>Add Room</h1>
         </TabPane>
         <TabPane tab="Users" key="4">
-          <h1>Users</h1>
+          <Users />
         </TabPane>
       </Tabs>
     </div>
@@ -185,7 +194,7 @@ export function Users() {
       <div className="col-md-12">
 
         <h1>Users</h1>
-
+        {loading && <Loader />}
         <table className='table table-dark table-bordered'>
 
           <thead>
@@ -196,6 +205,17 @@ export function Users() {
               <th>Is Admin</th>
             </tr>
           </thead>
+
+          <tbody>
+            {users && (users.map(user => {
+              return <tr>
+                <td>{user._id}</td>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td>{user.isAdmin ? 'YES' : 'NO'}</td>
+              </tr>
+            }))}
+          </tbody>
 
         </table>
 
