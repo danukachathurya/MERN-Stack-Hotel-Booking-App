@@ -1,6 +1,12 @@
 import React, {useState} from 'react';
 import {Modal, Button, Carousel} from 'react-bootstrap';
 import {Link} from 'react-router-dom'
+import AOS from 'aos'
+import 'aos/dist/aos.css'; 
+
+AOS.init({
+  duration: 1000
+});
 
 function Room({room, fromdate, todate}) {
 
@@ -10,7 +16,7 @@ function Room({room, fromdate, todate}) {
   const handleShow = () => setShow(true);
 
   return (
-    <div className='row bs'>
+    <div className='row bs' data-aos='fade-up'>
       <div className="col-md-4">
         <img src={room.imageurls[0]} className='smallimg'/>
       </div>

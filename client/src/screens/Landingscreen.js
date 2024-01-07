@@ -1,5 +1,11 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
+import AOS from 'aos'
+import 'aos/dist/aos.css'; 
+
+AOS.init({
+  duration: 2000
+});
 
 function Landingscreen() {
   return (
@@ -7,8 +13,8 @@ function Landingscreen() {
 
       <div className="col-md-9 my-auto" style={{textAlign:'center', borderRight: '8px solid white'}}>
 
-        <h2 style={{color:'white', fontSize: '130px'}}>SheyRooms</h2>
-        <h1 style={{color:'white'}}>"There is only one boss. The Guest."</h1>
+        <h2 data-aos='zoom-in' style={{color:'white', fontSize: '130px'}}>SheyRooms</h2>
+        <h1 data-aos='zoom-out' style={{color:'white'}}>"There is only one boss. The Guest."</h1>
 
         <Link to='/home'>
           <button className='btn landingbtn'>Get Started</button>
